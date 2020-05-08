@@ -115,8 +115,8 @@ span.price {
 <div class="row">
   <div class="col-75">
     <div class="container">
-      <form action="thankyou.html">
-      
+      <form id = "purchases">
+      <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <div class="row">
           <div class="col-50">
             <h3>Billing Address</h3>
@@ -165,6 +165,11 @@ span.price {
                 <label for="cvv">CVV</label>
                 <input type="text" id="cvv" name="cvv" placeholder="*Numbers on Back of Card" required>
               </div>
+			  
+			  <div class="col-50">
+                <label for="cvv">Clarify Payment</label>
+                <input type="text" id="payment" name="payment" placeholder="Match Payment above." required>
+              </div>
             </div>
           </div>
           
@@ -172,8 +177,45 @@ span.price {
         <label>
           <input type="checkbox" checked="checked" name="sameadr"> Shipping address same as billing
         </label>
-        <input type="submit" value="Continue to checkout" class="btn">
+        <input type="submit" id = "submit-form" value="Continue to checkout" class="btn">
       </form>
+	  
+	  <script>
+
+$.fn.serializeObject = function() {
+    var o = {};
+    var a = this.serializeArray();
+    $.each(a, function() {
+        if (o[this.name]) {
+            if (!o[this.name].push) {
+                o[this.name] = [o[this.name]];
+            }
+            o[this.name].push(this.value || '');
+        } else {
+            o[this.name] = this.value || '';
+        }
+    });
+    return o;
+};
+
+	var $form = $('form#purchases'),
+    url = 'https://script.google.com/macros/s/AKfycbxtkOqkdSbShrKAUvENkvPE83TXiCbwT_GyMKqMyH-huoGKplud/exec'
+
+$('#submit-form').on('click', function(e) {
+  e.preventDefault();
+  var jqxhr = $.ajax({
+    url: url,
+    method: "GET",
+    dataType: "json",
+    data: $form.serializeObject()
+  }).success(
+    // do something
+  );
+})
+
+
+</script>
+	  
     </div>
   </div>
   
